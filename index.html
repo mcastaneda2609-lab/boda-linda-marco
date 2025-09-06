@@ -196,7 +196,7 @@
             text-align: center;
             opacity: 1;
             visibility: visible;
-            transition: opacity 1s ease-out, visibility 1s ease-out;
+            //transition: opacity 1s ease-out, visibility 1s ease-out;
             font-family: var(--font-lora); /* Usa la misma fuente que el cuerpo */
         }
 
@@ -520,21 +520,17 @@
 
             setTimeout(() => {
               
-                introOverlay.style.visibility = 'hidden';
-            }, 3500); // Después de 2.5 segundos (1s del primer timeout + 1.5s para regresar y ocultar)
+                introOverlay.style.opacity = '0';
+            }, 3000); 
         });
 
-        // Script para el efecto de movimiento parallax (floral-background) y control del logo
+        // Script para el control de visibilidad del logo
         document.addEventListener('scroll', function() {
-            const floralBackground = document.querySelector('.floral-background');
-            let scrollPosition = window.scrollY;
-          
-
-            // Control de visibilidad del logo
             const mainLogo = document.getElementById('mainLogo');
-            const portadaHeight = document.getElementById('portada').offsetHeight; // Altura de la portada
+            const portadaHeight = document.getElementById('portada').offsetHeight;
+            let scrollPosition = window.scrollY;
 
-            if (scrollPosition > portadaHeight*0.05) { // Mostrar logo cuando se haya pasado casi toda la portada
+            if (scrollPosition > portadaHeight*0.05) {
                 mainLogo.classList.add('visible');
             } else {
                 mainLogo.classList.remove('visible');
