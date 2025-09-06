@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda de Linda & Marco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Cookie&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #4a214c; /* Morado oscuro para títulos y detalles */
+            --color-secondary: #e2dada; /* Morado claro para fondos y elementos */
+            --color-text: #343a40; /* Gris oscuro para el texto principal */
+            --color-bg-light: #f7f3f9; /* Fondo muy claro */
+            --font-cookie: 'Cookie', cursive;
+            --font-lora: 'Lora', serif;
+            --font-caveat: 'Caveat', cursive;
+        }
+
+        body {
+            font-family: var(--font-lora);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-bg-light);
+            overflow-x: hidden;
+        }
+
+        /* --- Estilos Generales --- */
+        .section {
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, .title-script {
+            font-family: var(--font-cookie);
+            color: var(--color-primary);
+            margin-top: 0;
+        }
+
+        .title-script {
+            font-size: 6rem; /* Tamaño base para móvil */
+            margin-bottom: 20px;
+            font-style: normal;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 1.1rem; /* Tamaño base para el texto del cuerpo */
+        }
+
+        /* --- Botones --- */
+        .button, .map-button, .whatsapp-button, .calendar-button, .album-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 2rem;
+            gap: 10px;
+            text-decoration: none;
+            border-radius: 50px;
+            color: #fff;
+            margin-top: 25px;
+            transition: background-color 0.3s ease;
+            font-size: 2rem; /* Tamaño base para móvil */
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.4); /* Sombra de texto más sutil */
+        }
+
+        .button:hover, .map-button:hover, .whatsapp-button:hover, .calendar-button:hover, .album-button:hover {
+            background-color: #6a006a;
+        }
+
+        .map-button, .whatsapp-button, .calendar-button, .album-button {
+            background-color: var(--color-primary);
+        }
+
+        /* --- Logo --- */
+        .logo {
+            position: fixed;
+            width: 100px; /* Tamaño del logo */
+            height: 100px; /* Tamaño del logo */
+            background-repeat: no-repeat;
+            background-size: contain; /* Ajustar para que quepa */
+            opacity: 0; /* Oculto por defecto */
+            z-index: 10; /* Por encima de todo cuando aparece */
+            pointer-events: none; /* No interactuable por defecto */
+            bottom: 20px;
+            right: 20px;
+            background-image: url('images/logo.png');
+            background-position: bottom right;
+            transition: opacity 0.5s ease-out; /* Transición suave */
+        }
+
+        .logo.visible {
+            opacity: 1;
+            pointer-events: auto; /* Se vuelve interactuable cuando es visible */
+        }
+
+        .floral-background {
+            height: 100vh;
+            width: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            background-image: url('images/background.jpg');
+            background-size: cover;
+            background-position: top left;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 0.5;
+            pointer-events: none; /* No interactuable */
+            /* El transform se manejará con JS para el efecto de arrastre */
+        }
+
+        /* --- 1. Portada --- */
+        .portada {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            color: var(--color-primary);
+            text-align: center;
+            position: relative;
+            background-image: url('images/portada.jpg');
+            background-size: cover;
+            background-position: right;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            transition: transform 0.5s ease-out; /* Para la animación de movimiento */
+        }
+
+        .portada::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(247, 243, 249, 1) 0%, rgba(247, 243, 249, 0) 100%); /* Difuminado más claro */
+            z-index: 2;
+        }
+
+        .portada-content {
+            position: relative;
+            z-index: 3;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3); /* Sombra de texto más sutil */
+            padding: 20px;
+            padding-bottom: 50px; /* Más padding para separar del borde */
+        }
+        
+        .portada-content h1 {
+            font-size: 10rem;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+
+        .portada-content h3 {
+            font-size: 5rem;
+            font-style: normal;
+            font-family: var(--font-lora);
+            color: var(--color-primary);
+        }
+        
+        .portada-content p {
+            font-family: var(--font-lora);
+            font-size: 2.5rem;
+            color: var(--color-text);
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        /* --- Overlay de Animación de Inicio --- */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Oscurece la pantalla */
+            z-index: 9999; /* Asegura que esté por encima de todo */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+            font-family: var(--font-lora); /* Usa la misma fuente que el cuerpo */
+        }
+
+        .intro-overlay.hide {
+            opacity: 0;
+        }
+
+        .scroll-text {
+            margin-bottom: 20px;
+            font-size: 4rem;
+        }
+
+        .scroll-arrow {
+            font-size: 10rem;
+            animation: bounce 1s infinite alternate; /* Animación de rebote */
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        /* --- 2. Ceremonia & 3. Recepción (estilos compartidos) --- */
+        .event-section {
+            display: flex;
+            flex-direction: column; /* Columna por defecto para móviles */
+            align-items: center;
+            justify-content: center;
+            gap: 20px; /* Menos espacio en móvil */
+            margin-top: 30px;
+        }
+        .event-details {
+            text-align: center; /* Centrar texto en móvil */
+        }
+        .container h3 {
+            font-size: 2rem; /* Tamaño de título de evento */
+            font-family: var(--font-lora);
+            margin-bottom: 10px;
+        }
+        .container p {
+            font-size: 1rem; /* Mismo tamaño para todos los párrafos de datos */
+            line-height: 1;
+        }
+
+        /* --- Efecto de Fondo para Imágenes entre secciones (fijas y cubriendo) --- */
+        .fixed-background-image {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .fixed-background-image-landscape {
+            height: 75vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-size: 80vh;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        /* --- Contador --- */
+        #countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap; /* Para que se ajusten en móviles */
+            margin-top: 30px;
+        }
+        .countdown-block {
+            background-color: rgba(255, 255, 255, 0.6); /* Fondo claro con transparencia */
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 4.5rem; /* Números grandes */
+            font-weight: bold;
+            color: var(--color-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 10vw; /* Ancho mínimo para los bloques */
+        }
+        .countdown-block span.unit {
+            font-size: 1rem; /* Tamaño de la unidad */
+            font-weight: normal;
+            color: var(--color-text);
+            margin-top: 5px;
+        }
+
+        /* --- Media Queries para Responsive --- */
+        @media (min-width: 1080px) {
+            .title-script {
+                font-size: 4rem;
+            }
+            .container p {
+                font-size: 1.2rem; /* Mismo tamaño para todos los párrafos de datos */
+                line-height: 1;
+            }
+            .portada-content {
+                padding: 5px;
+            }
+            .portada-content p {
+                font-size: 1.5rem;
+            }
+            .portada-content h1 {
+                font-size: 7rem;
+            }
+            .portada-content h3 {
+                font-size: 2rem;
+            }
+            .button, .map-button, .whatsapp-button, .calendar-button, .album-button {
+                padding: 0.2rem 2rem;
+                font-size: 1rem;
+            }
+            .event-section {
+                flex-direction: row;
+                gap: 30px;
+            }
+            .event-details {
+                text-align: left;
+            }
+            .countdown-block {
+                font-size: 4rem;
+            }
+            .countdown-block span.unit {
+                font-size: 1.5rem;
+            }
+            .fixed-background-image-landscape {
+                background-size: contain;
+            }
+            .fixed-background-image {
+                background-size: contain;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo" id="mainLogo"></div>
+    <div class="floral-background"></div>
+
+    <div class="intro-overlay" id="introOverlay">
+        <p class="scroll-text">Desliza</p>
+        <span class="scroll-arrow">↓</span>
+    </div>
+
+    <section id="portada" class="portada">
+        <div class="portada-content">
+            <p>Con el corazón lleno de alegría, queremos invitarlos a celebrar nuestro amor.</p>
+            <h1>Linda & Marco</h1>
+            <h3>20.12.2025</h3>
+        </div>
+    </section>
+
+    <section id="ceremonia" class="section">
+        <div class="container">
+            <h2 class="title-script">Ceremonia Religiosa</h2>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <img src="images/icono_paloma.png" alt="Icono paloma" style="width: auto; height: 20vh;">
+            </div>
+            <h3>Parroquía del Rosario de Monterrey</h3>
+            <p>Río Támesis 101, Roma, 64700 Monterrey</p>
+            <p><strong>6:00 pm</strong></p>
+            <a href="https://maps.app.goo.gl/oyVMcum6ZxkCNJN66" class="map-button">
+              <img src="images/icono_ubicacion.png" alt="Icono de Google Maps" style="width: auto; height: 60px;">
+              ¿Cómo llegar?
+            </a>
+        </div>
+    </section>
+
+    <section id="recepcion" class="section">
+        <div class="container">
+            <h2 class="title-script">Recepción</h2>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <img src="images/icono_copas.png" alt="Icono de copas" style="width: auto; height: 20vh;">
+            </div>
+            <h3>Las Pampas Eventos: Salón Martin Fierro</h3>
+            <p>Avenida, C. 2 de Abril - Jesús Dionisio González 2302, Roma, 64700 Monterrey</p>
+            <p><strong>8:00 pm</strong></p>
+            <a href="https://maps.app.goo.gl/inoAE2TsR3gXHA3T7" class="map-button">
+              <img src="images/icono_ubicacion.png" alt="Icono de Google Maps" style="width: auto; height: 60px;">
+              ¿Cómo llegar?
+            </a>
+        </div>
+    </section>
+
+      <div class="fixed-background-image-landscape" style="background-image: url('images/foto_1.jpg');"></div>
+
+    <section id="vestimenta" class="section">
+        <div class="container">
+            <h2 class="title-script">Código de vestimenta</h2>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 30px;">
+                <img src="images/icono_vestimenta.png" alt="Icono de vestimenta" style="width: auto; height: 30vh;">
+            </div>
+            <p style="font-size:1.5rem;"><strong>Etiqueta</strong></p>
+            <p style="font-size:0.8rem;">Mujeres vestido largo / Hombres traje oscuro</p>
+        </div>
+    </section>
+
+    <section id="regalos" class="section">
+        <div class="container">
+            <h2 class="title-script">Regalos</h2>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <img src="images/icono_regalos.png" alt="Icono de regalo" style="width: auto; height: 20vh;">
+            </div>
+            <p><strong>¡Nos vamos a España!</strong> Y aunque nos encantaría llevarnos sus regalos, nuestras maletas tienen límite de peso...</p>
+            <p>Si deseas darnos un detalle, lo agradeceremos en efectivo o por transferencia.</p>
+        </div>
+    </section>
+
+    <div class="fixed-background-image" style="background-image: url('images/foto_2.jpg');"></div>
+
+    <section id="confirmacion" class="section">
+        <div class="container">
+            <h2 class="title-script">Confirma tu asistencia</h2>
+            <p>Por favor, ayúdanos a planificar este día tan especial confirmando tu asistencia antes del [Fecha límite].</p>
+            <a href="[enlace-whatsapp]" class="whatsapp-button">
+                <img src="images/icono_whatsapp.png" alt="Icono de WhatsApp" style="width: auto; height: 70px;">
+                Confirmar por WhatsApp
+            </a>
+        </div>
+    </section>
+    
+    <section id="faq" class="section">
+        <div class="container">
+            <h2 class="title-script">Preguntas frecuentes</h2>
+            <p>[Ejemplo: ¿Hay estacionamiento? ¿Pueden ir niños? ¿Dónde puedo hospedarme?]</p>
+        </div>
+    </section>
+
+    <section id="album" class="section">
+        <div class="container">
+            <h2 class="title-script">Álbum de fotos</h2>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                <img src="images/icono_camara.png" alt="Icono de fotos" style="width: auto; height: 20vh;">
+            </div>
+            <p>[Ejemplo: Comparte con nosotros tus fotos y videos del día de la boda. ¡Nos encantaría ver tus momentos!]</p>
+            <a href="[enlace-a-album-compartido]" class="album-button">
+                <img src="images/icono_camara_2.png" alt="Icono de álbum" style="width: auto; height: 50px;">
+                Abrir álbum de fotos
+            </a>
+        </div>
+    </section>
+
+    <div class="fixed-background-image" style="background-image: url('images/foto_3.jpg');"></div>
+
+   <section id="countdown" class="section">
+        <div class="container">
+            <h2 class="title-script">Nos vemos en...</h2>
+            <div id="countdown-timer">
+                <div class="countdown-block">
+                    <span id="days"></span>
+                    <span class="unit">Días</span>
+                </div>
+                <div class="countdown-block">
+                    <span id="hours"></span>
+                    <span class="unit">Horas</span>
+                </div>
+                <div class="countdown-block">
+                    <span id="minutes"></span>
+                    <span class="unit">Minutos</span>
+                </div>
+                <div class="countdown-block">
+                    <span id="seconds"></span>
+                    <span class="unit">Segundos</span>
+                </div>
+            </div>
+            <a href="[enlace-para-agregar-a-calendario]" class="calendar-button">
+                <img src="images/icono_calendario.png" alt="Icono de calendario" style="width: auto; height: 50px;">
+                Añadir al calendario
+            </a>
+        </div>
+    </section>
+
+    <script>
+        // Fecha de la boda: 20 de diciembre de 2025
+        const weddingDate = new Date("December 21, 2025 03:00:00").getTime();
+        
+        const countdownTimerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+            
+            if (distance < 0) {
+                clearInterval(countdownTimerInterval);
+                document.getElementById("countdown-timer").innerHTML = "¡Es el día!";
+            }
+        }, 1000);
+
+        // Script para la animación de inicio (overlay)
+        document.addEventListener('DOMContentLoaded', function() {
+            const introOverlay = document.getElementById('introOverlay');
+            const overlayText = document.getElementById('scroll-text');
+            const portada = document.getElementById('portada');
+
+            // Mostrar el overlay inicialmente
+            introOverlay.style.opacity = '1';
+
+            setTimeout(() => {
+                portada.style.transform = 'translateY(-40px)'; // Mueve la portada hacia abajo
+            }, 1000); // Después de 1 segundo
+
+            setTimeout(() => {
+                portada.style.transform = 'translateY(0)'; // Regresa la portada
+            }, 2000);
+
+            setTimeout(() => {
+              
+                introOverlay.style.visibility = 'hidden';
+            }, 3500); // Después de 2.5 segundos (1s del primer timeout + 1.5s para regresar y ocultar)
+        });
+
+        // Script para el efecto de movimiento parallax (floral-background) y control del logo
+        document.addEventListener('scroll', function() {
+            const floralBackground = document.querySelector('.floral-background');
+            let scrollPosition = window.scrollY;
+          
+
+            // Control de visibilidad del logo
+            const mainLogo = document.getElementById('mainLogo');
+            const portadaHeight = document.getElementById('portada').offsetHeight; // Altura de la portada
+
+            if (scrollPosition > portadaHeight*0.05) { // Mostrar logo cuando se haya pasado casi toda la portada
+                mainLogo.classList.add('visible');
+            } else {
+                mainLogo.classList.remove('visible');
+            }
+        });
+
+    </script>
+</body>
+</html>
