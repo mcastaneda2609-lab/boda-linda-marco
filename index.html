@@ -167,6 +167,7 @@
             font-style: normal;
             font-family: var(--font-lora);
             color: var(--color-primary);
+            margin-bottom: 5px;
         }
         
         .portada-content p {
@@ -523,9 +524,22 @@
                 introOverlay.style.opacity = '0';
             }, 3000); 
         });
+// Script para el control de visibilidad del logo
+        document.addEventListener('scroll', function() {
+            const mainLogo = document.getElementById('mainLogo');
+            const portadaHeight = document.getElementById('portada').offsetHeight;
+            let scrollPosition = window.scrollY;
+
+            if (scrollPosition > portadaHeight*0.05) {
+                mainLogo.classList.add('visible');
+            } else {
+                mainLogo.classList.remove('visible');
+            }
+        });
 
         
     </script>
 </body>
 </html>
+
 
