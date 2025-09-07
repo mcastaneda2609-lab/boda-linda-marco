@@ -80,6 +80,11 @@
         .map-button, .whatsapp-button, .calendar-button, .album-button {
             background-color: var(--color-primary);
         }
+        .button span, .map-button span, .whatsapp-button span, .calendar-button span, .album-button span {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px; /* Para que haya un pequeño espacio entre el ícono y el texto */
+        }
 
         /* --- Logo --- */
         .logo {
@@ -368,8 +373,10 @@
             <p>Río Támesis 101, Roma, 64700 Monterrey</p>
             <p><strong>6:00 pm</strong></p>
             <a href="https://maps.app.goo.gl/oyVMcum6ZxkCNJN66" class="map-button">
-              <img src="https://lh3.googleusercontent.com/d/1QY7AGmk3BG8FpUnT31BVdyxYqioDAwsz" alt="Icono de Google Maps" style="width: auto; height: 60px;">
-              ¿Cómo llegar?
+                <span>
+                    <img src="https://lh3.googleusercontent.com/d/1QY7AGmk3BG8FpUnT31BVdyxYqioDAwsz" alt="Icono de Google Maps" style="width: auto; height: 60px;">
+                    ¿Cómo llegar?
+                </span> 
             </a>
         </div>
     </section>
@@ -384,8 +391,10 @@
             <p>Avenida, C. 2 de Abril - Jesús Dionisio González 2302, Roma, 64700 Monterrey</p>
             <p><strong>8:00 pm</strong></p>
             <a href="https://maps.app.goo.gl/inoAE2TsR3gXHA3T7" class="map-button">
-              <img src="https://lh3.googleusercontent.com/d/1QY7AGmk3BG8FpUnT31BVdyxYqioDAwsz" alt="Icono de Google Maps" style="width: auto; height: 60px;">
-              ¿Cómo llegar?
+                <span>
+                    <img src="https://lh3.googleusercontent.com/d/1QY7AGmk3BG8FpUnT31BVdyxYqioDAwsz" alt="Icono de Google Maps" style="width: auto; height: 60px;">
+                    ¿Cómo llegar?
+                </span> 
             </a>
         </div>
     </section>
@@ -541,5 +550,6 @@
     </script>
 </body>
 </html>
+
 
 
