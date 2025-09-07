@@ -208,6 +208,7 @@
 
         .intro-overlay.hide {
             opacity: 0;
+            pointer-events: none; /* ¡Este es el cambio clave! */
         }
 
         .scroll-text {
@@ -529,9 +530,7 @@
             }, 2000);
 
             setTimeout(() => {
-              
-                introOverlay.style.opacity = '0';
-                introOverlay.style.visibility = 'hidden';
+              introOverlay.classList.add('hide');
             }, 3000); 
         });
 // Script para el control de visibilidad del logo
@@ -551,6 +550,7 @@
     </script>
 </body>
 </html>
+
 
 
 
